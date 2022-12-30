@@ -37,7 +37,6 @@ echo "Dumping mysql: "
 
 for i in `cat $FOLDER/dbs.txt`;
 do
-        echo "$i"
         /bin/rm -Rf $FOLDER/"$i".sql
         /usr/sbin/plesk db dump "$i" > $FOLDER/"$i".sql
         
