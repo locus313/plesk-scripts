@@ -1,6 +1,5 @@
 #!/bin/sh
-HOME=/backup/mysql/
-export HOME
+
 FOLDER=/backup/mysql/data
 PID=/backup/mysql/mysql.pid
 
@@ -20,24 +19,32 @@ echo $$ > $PID
 
 umask 077
 
-IFS=''
+HOME=/backup/mysql/
+export HOME
+
+IFS='
+'
 /usr/sbin/plesk db -e "show databases" | grep -v -E "^Database|information_schema|performance_schema|phpmyadmin" > $FOLDER/dbs.txt
 
 if [ "x$?" != "x0" ]; then
+
   echo cannot connect to MySQL
   rm -f $PID
   exit 1
+
 fi
 
 echo "Dumping mysql: "
 
 for i in `cat $FOLDER/dbs.txt`;
 do
-        echo "$i"
+
         /usr/sbin/plesk db dump "$i" > $FOLDER/"$i".sql
         
         if [ "x$?" != "x0" ]; then
+
                 echo "Dump fialed for db: $i"
+
         fi
 
 done
