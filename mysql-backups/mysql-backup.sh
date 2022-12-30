@@ -4,7 +4,6 @@ FOLDER=/backup/mysql/data
 PID=/backup/mysql/mysql.pid
 
 /bin/mkdir -p "$FOLDER"
-rm -Rf "$FOLDER/*"
 
 if [ -f $PID ]
 then
@@ -38,7 +37,8 @@ echo "Dumping mysql: "
 
 for i in `cat $FOLDER/dbs.txt`;
 do
-
+        echo "$i"
+        /bin/rm -Rf $FOLDER/"$i".sql
         /usr/sbin/plesk db dump "$i" > $FOLDER/"$i".sql
         
         if [ "x$?" != "x0" ]; then
