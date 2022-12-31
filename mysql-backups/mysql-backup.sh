@@ -1,22 +1,18 @@
 #!/bin/sh
 HOME="/backup/mysql/"
-export $HOME
 FOLDER="$HOME/data"
 PID="$HOME/mysql.pid"
 
 /bin/mkdir -p "$FOLDER"
 
-if [ -f $PID ]
-then
+if [ -f $PID ]; then
 
-KILL=`cat $PID`
-
-echo "Another instance of script is run trying to kill:" `kill -9 $KILL`
+  KILL=`cat $PID`
+  echo "Another instance of script is run trying to kill:" `kill -9 $KILL`
 
 fi
 
 echo $$ > $PID
-
 umask 077
 
 IFS='
@@ -48,7 +44,5 @@ do
 done
 
 echo "mysql backup done"
-
 rm -f $PID
-
 exit 0
