@@ -1,7 +1,8 @@
 #!/bin/sh
-
-FOLDER=/backup/mysql/data
-PID=/backup/mysql/mysql.pid
+HOME="/backup/mysql/"
+export $HOME
+FOLDER="$HOME/data"
+PID="$HOME/mysql.pid"
 
 /bin/mkdir -p "$FOLDER"
 
@@ -18,9 +19,6 @@ echo $$ > $PID
 
 umask 077
 
-HOME=/backup/mysql/
-export HOME
-
 IFS='
 '
 /usr/sbin/plesk db -e "show databases" | grep -v -E "^Database|information_schema|performance_schema|phpmyadmin" > $FOLDER/dbs.txt
@@ -33,10 +31,11 @@ if [ "x$?" != "x0" ]; then
 
 fi
 
-echo "Dumping mysql: "
+echo "Dumping mysql databases: "
 
 for i in `cat $FOLDER/dbs.txt`;
 do
+        echo "$i"
         /bin/rm -Rf $FOLDER/"$i".sql
         /usr/sbin/plesk db dump "$i" > $FOLDER/"$i".sql
         
